@@ -1,0 +1,154 @@
+substitutions:
+  mft_name: tuya
+  base_name: doorsensor
+  mac_address: ""
+  device_name: "${mft_name}-${base_name}"
+  device_ota: "input_boolean.${mft_name}_${base_name}_ota"
+
+esphome:
+  name: ${device_name}
+  name_add_mac_suffix: true
+  project: 
+    name: cap9qd.tuya-doorsensor
+    version: "0.1"
+  on_boot:
+    priority: -100
+    then:
+      - light.turn_on: wifi_status
+      - delay: 500ms
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 500ms
+      - logger.log: "WiFi Connected!"
+      - light.turn_on: wifi_status
+      - logger.log: "Waiting for the API to connect..."
+      - wait_until:
+          condition:
+            api.connected:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - logger.log: "API Connected"
+          else:
+            - logger.log: "API NOT Connected"  
+      - delay: 2s
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - deep_sleep.prevent: deep_sleep_1
+            - logger.log: "Waiting for OTA Update..."
+            - repeat:
+                count: 150
+                then:
+                  - delay: 2s
+            - script.execute: turnoff_ha_ota
+            - logger.log: "Give up waiting on OTA..."
+            - deep_sleep.allow: deep_sleep_1
+          else:
+            - component.update: bat_volts
+            - logger.log: 'Entering Deep Sleep'
+      - light.turn_off: wifi_status
+      - deep_sleep.enter: deep_sleep_1
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: add_deepsleep_bk7231n
+    components: [ deep_sleep ]
+
+bk72xx:
+  board: cbu
+    
+logger:
+  baud_rate: 115200
+  level: DEBUG
+  hardware_uart: UART1
+
+web_server:
+  port: 80
+
+captive_portal:
+
+api:
+
+ota:
+  on_end:
+    then:
+      - script.execute: turnoff_ha_ota
+
+wifi:
+  ap:
+    ssid: ${device_name} AP
+
+improv_serial:
+  
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/yaml/tuya-doorsensor.yaml@main
+
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: P14
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Button"
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    entity_id: ${device_ota}
+    publish_initial_state: true     # This is important!
+    
+output:
+  - platform: gpio
+    pin: 16
+    id: status_led
+
+light:
+  - platform: binary
+    id: wifi_status
+    output: status_led
+    restore_mode: ALWAYS_ON
+
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
+  - platform: gpio
+    pin: 8
+    name: "Power"
+    restore_mode: ALWAYS_ON 
+  
+sensor:
+  - platform: adc
+    pin: P23
+    name: "Battery Level"
+    update_interval: never
+    id: bat_volts
+
+deep_sleep:
+  sleep_duration: 
+    hours: 1
+  run_duration: 
+    default: 
+      seconds: 10
+  bk71xx_gpio_wakeup:
+    - number: 14
+      pin_mode: low_keep_awake
+  id: deep_sleep_1
+
+script: 
+  - id: turnoff_ha_ota
+    then:
+      - homeassistant.service:
+          service: input_boolean.turn_off
+          data:
+           entity_id: ${device_ota}

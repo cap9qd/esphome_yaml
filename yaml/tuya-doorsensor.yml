@@ -100,6 +100,14 @@ binary_sensor:
         input: true
         pullup: true
     name: "Button"
+  - platform: gpio
+    pin: 
+      number: P22
+      inverted: true
+      mode:
+        input: true
+    name: "DoorSwitch"
+    publish_initial_state: true
   - platform: homeassistant
     id: prevent_deep_sleep
     entity_id: ${device_ota}

@@ -89,7 +89,7 @@ wifi:
 improv_serial:
   
 dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/yaml/tuya-doorsensor.yaml@main
+  package_import_url: github://cap9qd/esphome_yaml/tuya-doorsensor.yaml@main
 
 binary_sensor:
   - platform: gpio

@@ -1,7 +1,7 @@
 #Tuya PIR and Alarm 812WT
 substitutions:
   mft_name: tuya
-  base_name: doorsensor
+  base_name: piralarm
   name: "${mft_name}-${base_name}"
 
 esphome:
@@ -51,12 +51,6 @@ text_sensor:
 
 binary_sensor:
   - platform: gpio
-    id: binary_switch_1
-    pin:
-      number: P14
-      inverted: true
-      mode: INPUT_PULLUP
-  - platform: gpio
     id: pir_input
     name: PIR Input
     pin: 
@@ -67,7 +61,6 @@ binary_sensor:
     on_release: 
       - switch.turn_off: status_led
 
-# Example configuration entry
 output:
   - platform: libretiny_pwm
     pin: P6
@@ -80,10 +73,6 @@ light:
     output: pwm_output
 
 switch:
-  - platform: gpio
-    name: RST Switch Pullup
-    id: switch_pullup_out
-    pin: P16
   - platform: gpio
     name: status_led
     id: status_led

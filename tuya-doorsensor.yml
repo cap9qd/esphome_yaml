@@ -87,7 +87,9 @@ wifi:
     ssid: ${device_name} AP
 
 improv_serial:
-  
+
+mdns:
+
 dashboard_import:
   package_import_url: github://cap9qd/esphome_yaml/tuya-doorsensor.yml@main
 

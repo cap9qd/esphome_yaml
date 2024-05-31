@@ -1,5 +1,5 @@
 substitutions:
-  name: esp32-bluetooth-proxy
+  name: xiao-ble-proxy
   friendly_name: Bluetooth Proxy
 
 esphome:
@@ -7,12 +7,13 @@ esphome:
   friendly_name: ${friendly_name}
   name_add_mac_suffix: true
   project:
-    name: esphome.bluetooth-proxy
+    name: cap9qd.bluetooth-proxy
     version: "1.0"
   platformio_options:
-    board_build.f_flash: 40000000L
+    build_flags: -DBOARD_HAS_PSRAM
+    board_build.f_flash: 80000000L
     board_build.flash_mode: dio
-    board_build.flash_size: 4MB
+    board_build.flash_size: 8MB
 
 esp32:
   board: esp32-s3-devkitm-1
@@ -35,9 +36,6 @@ dashboard_import:
 
 esp32_ble_tracker:
   scan_parameters:
-    # We currently use the defaults to ensure Bluetooth
-    # can co-exist with WiFi In the future we may be able to
-    # enable the built-in coexistence logic in ESP-IDF
     active: true
 
 bluetooth_proxy:

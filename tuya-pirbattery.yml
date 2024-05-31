@@ -115,7 +115,7 @@ binary_sensor:
     name: PIR Input
     pin: 
       number: P22
-      mode: INPUT_PULLUP
+      mode: INPUT
     publish_initial_state: true     # This is important!
   - platform: homeassistant
     id: prevent_deep_sleep
@@ -147,7 +147,7 @@ sensor:
     id: bat_volts
     update_interval: never
     filters:
-      - multiply: 2.2
+      - multiply: 2.3
 
 deep_sleep:
   sleep_duration: 
@@ -159,7 +159,7 @@ deep_sleep:
     - number: 14
       pin_mode: low_keep_awake
     - number: 22
-      pin_mode: low_keep_awake
+      pin_mode: high_keep_awake
   id: deep_sleep_1
   
 

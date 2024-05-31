@@ -65,7 +65,7 @@ external_components:
     components: [ deep_sleep ]
 
 dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/tuya-pirbattery.yml@main
+  package_import_url: github://cap9qd/esphome_yaml/tuya-pirbattery.yml
   
 bk72xx:
   board: cbu
@@ -85,9 +85,6 @@ api:
 ota:
 
 mdns:
-
-dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/tuya-pirbattery.yml
 
 wifi:
   ap:

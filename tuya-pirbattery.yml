@@ -3,7 +3,7 @@ substitutions:
   mft_name: tuya
   base_name: pirbattery
   name: "${mft_name}-${base_name}"
-  ota: "${mft_name}_${base_name}_ota"
+  ota: "input_boolean.${mft_name}_${base_name}_ota"
 
 esphome:
   name: ${name}

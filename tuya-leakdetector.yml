@@ -1,0 +1,190 @@
+substitutions:
+  mft_name: tuya
+  base_name: leakdetector
+  mac_address: ""
+  device_name: "${mft_name}-${base_name}"
+  device_ota: "input_boolean.${mft_name}_${base_name}_ota"
+  #device_name: "${mft_name}-${base_name}-${mac_address}"
+  #device_ota: "input_boolean.${mft_name}_${base_name}_${mac_address}_ota"
+  
+esphome:
+  name: ${device_name}
+  name_add_mac_suffix: True
+  project:
+    name: cap9qd.tuya-leakdetector
+    version: "0.1"
+  on_boot:
+    priority: -100
+    then:
+      - light.turn_on: wifi_status
+      - delay: 500ms
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 500ms
+      - logger.log: "WiFi Connected!"
+      - light.turn_on: wifi_status
+      - logger.log: "Waiting for the API to connect..."
+      - wait_until:
+          condition:
+            api.connected:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - logger.log: "API Connected"
+          else:
+            - logger.log: "API NOT Connected"  
+      - logger.log: "I'm still in the on_boot code..."
+      - delay: 5s
+      
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+            - deep_sleep.prevent: deep_sleep_1
+            - logger.log: "Waiting for OTA Update..."
+            - repeat:
+                count: 150
+                then:
+                  - delay: 2s
+            - script.execute: turnoff_ha_ota
+            - logger.log: "Give up waiting on OTA..."
+            - deep_sleep.allow: deep_sleep_1
+          else:
+            - component.update: bat_volts
+            - logger.log: 'Entering Deep Sleep'
+      - light.turn_off: wifi_status
+      - deep_sleep.enter: deep_sleep_1
+
+improv_serial:
+
+mdns:
+
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/tuya-leakdetector.yml
+
+bk72xx:
+  board: cbu
+  
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: add_deepsleep_bk7231n
+    components: [ deep_sleep ]
+
+# Enable logging
+logger:
+  baud_rate: 115200
+  level: DEBUG
+  hardware_uart: UART1
+
+web_server:
+  port: 80
+
+captive_portal:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  on_end:
+    then:
+      - script.execute: turnoff_ha_ota
+
+wifi:
+  ap:
+    ssid: ${device_name} AP
+
+# Example configuration entry
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: 20
+      mode:
+        input: true
+        pullup: true
+      inverted: true
+    name: "RST Button"
+    id: rst_button
+    publish_initial_state: true
+  - platform: gpio
+    pin: 
+      number: 16
+      mode:
+        input: true
+        pullup: false
+        pulldown: false
+    name: "Leak Pin"
+    id: leak_pin
+    publish_initial_state: true
+  - platform: gpio
+    pin: 
+      number: 7
+    name: "BZ_PIN"
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    entity_id: ${device_ota}
+    publish_initial_state: true     # This is important!
+    
+# Example configuration entry
+output:
+  - platform: gpio
+    pin: 26
+    id: status_led
+  
+sensor:
+  - platform: adc
+    pin: 23
+    name: "Battery Voltage"
+    id: bat_volts
+    update_interval: never
+    filters:
+      - multiply: 2.0
+
+deep_sleep:
+#  sleep_duration: 60sec
+#  run_duration: 60sec
+  run_duration: 
+    default: 60sec
+    gpio_wakeup_reason: 60sec
+  sleep_duration: 131076sec 
+  #60min
+  bk71xx_gpio_wakeup:
+    - number: 16
+      pin_mode: high_keep_awake
+    - number: 20
+      pin_mode: low_keep_awake
+  id: deep_sleep_1
+  
+light:
+  - platform: binary
+    id: wifi_status
+    output: status_led
+    restore_mode: ALWAYS_ON
+
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
+  - platform: gpio
+    pin: 
+      number: 17
+      mode: 
+        output: true
+    restore_mode: ALWAYS_ON
+    id: samp_sw_pin
+    name: SAMP_SW_PIN
+    
+script: 
+  - id: turnoff_ha_ota
+    then:
+      - homeassistant.service:
+          service: input_boolean.turn_off
+          data:
+            entity_id: ${device_ota}

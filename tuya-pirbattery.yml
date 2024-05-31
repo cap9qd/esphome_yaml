@@ -64,8 +64,6 @@ external_components:
       ref: add_deepsleep_bk7231n
     components: [ deep_sleep ]
 
-mdns:
-
 dashboard_import:
   package_import_url: github://cap9qd/esphome_yaml/tuya-pirbattery.yml@main
   

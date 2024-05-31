@@ -14,9 +14,11 @@ esphome:
     board_build.f_flash: 80000000L
     board_build.flash_mode: dio
     board_build.flash_size: 8MB
+    platform_packages:
+    - toolchain-riscv32-esp # @8.4.0+2021r2-patch5
 
 esp32:
-  board: esp32-s3-devkitm-1
+  board: esp32-s3-devkitc-1
   framework:
     type: esp-idf
     sdkconfig_options:

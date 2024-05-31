@@ -1,0 +1,60 @@
+substitutions:
+  mac: ""
+  mft: treatlife
+  model: dp20
+  name: ${mft}-${model}
+#  name: ${mft}-${model}-${mac}
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: true
+
+bk72xx:
+  board: generic-bk7231t-qfn32-tuya
+  framework:
+    version: dev
+
+# Enable Home Assistant API
+api:
+  reboot_timeout: 0s
+
+ota:
+
+wifi:
+  ap:
+    ssid: ${name} AP
+
+logger:
+  baud_rate: 0
+
+web_server:
+
+captive_portal:
+
+mdns:
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: "America/Chicago"
+    on_time_sync:
+      then:
+        - logger.log: "Synchronized sntp clock"
+
+uart:
+  rx_pin: GPIO10
+  tx_pin: GPIO11
+  baud_rate: 9600
+
+# Register the Tuya MCU connection
+tuya:
+
+# Create a light using the dimmer
+light:
+  - platform: "tuya"
+    name: "Dimmer"
+    dimmer_datapoint: 3
+    min_value_datapoint: 2
+    switch_datapoint: 1
+    min_value: 10
+    max_value: 1000

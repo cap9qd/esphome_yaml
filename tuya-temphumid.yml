@@ -5,7 +5,7 @@ substitutions:
   device_name: "${mft_name}-${base_name}"
   device_ota: "input_boolean.${mft_name}_${base_name}_ota"
   #device_name: "${mft_name}-${base_name}-${mac_address}"
-  #device_ota: "${mft_name}_${base_name}_${mac_address}_ota"
+  #device_ota: "input_boolean.${mft_name}_${base_name}_${mac_address}_ota"
 
 esphome:
   name: ${device_name}

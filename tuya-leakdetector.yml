@@ -1,7 +1,6 @@
 substitutions:
   mft_name: tuya
   base_name: leakdetector
-  mac_address: ""
   device_name: "${mft_name}-${base_name}"
   device_ota: "input_boolean.${mft_name}_${base_name}_ota"
   #device_name: "${mft_name}-${base_name}-${mac_address}"

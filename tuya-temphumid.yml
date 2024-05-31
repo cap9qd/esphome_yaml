@@ -1,15 +1,15 @@
 substitutions:
   mft_name: tuya
-  base_name: doorsensor2
+  base_name: temphumid
+  mac_address: ""
   device_name: "${mft_name}-${base_name}"
   device_ota: "input_boolean.${mft_name}_${base_name}_ota"
+  #device_name: "${mft_name}-${base_name}-${mac_address}"
+  #device_ota: "${mft_name}_${base_name}_${mac_address}_ota"
 
 esphome:
   name: ${device_name}
   name_add_mac_suffix: true
-  project: 
-    name: cap9qd.tuya-doorsensor
-    version: "0.2"
   on_boot:
     priority: -100
     then:
@@ -51,11 +51,23 @@ esphome:
             - deep_sleep.allow: deep_sleep_1
           else:
             - component.update: bat_volts
+            - component.update: cht_sensor
             - logger.log: 'Entering Deep Sleep'
       - light.turn_off: wifi_status
       - deep_sleep.enter: deep_sleep_1
 
 external_components:
+  # use rtttl and dfplayer from ESPHome's dev branch in GitHub
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: i2c_soft
+    components: [ i2c ]
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: cht8310
+    components: [ cht8310 ]
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
@@ -64,6 +76,9 @@ external_components:
 
 bk72xx:
   board: cbu
+  #framework:
+  #  version: 0.0.0
+  #  source: https://github.com/cap9qd/libretiny.git#feature/i2c-spi
     
 logger:
   baud_rate: 115200
@@ -86,11 +101,6 @@ wifi:
   ap:
     ssid: ${device_name} AP
 
-improv_serial:
-  
-dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/yaml/tuya-doorsensor2.yaml@main
-
 binary_sensor:
   - platform: gpio
     pin: 
@@ -100,18 +110,21 @@ binary_sensor:
         input: true
         pullup: true
     name: "Button"
+    publish_initial_state: true
   - platform: gpio
+    id: alert
     pin: 
-      number: P22
+      number: P7
       inverted: true
       mode:
         input: true
-    name: "DoorSwitch"
+        pullup: true
+    name: "Alert"
     publish_initial_state: true
   - platform: homeassistant
     id: prevent_deep_sleep
     entity_id: ${device_ota}
-    publish_initial_state: true     # This is important!
+    publish_initial_state: true
     
 output:
   - platform: gpio
@@ -134,12 +147,35 @@ switch:
     name: "Power"
     restore_mode: ALWAYS_ON 
   
+i2c:
+  sda: P22
+  scl: P20
+  scan: true
+  id: bus_a
+  softwire: true
+  
 sensor:
+  - platform: cht8310
+    temperature:
+      name: "Temperature"
+      min_temp: 20.0
+      max_temp: 30.0
+    humidity:
+      name: "Humidity"
+      min_humid: 10.0
+      max_humid: 95.0
+    update_interval: never
+    sd_mode: false
+    conv_time: 4
+    address: 0x40
+    id: cht_sensor
   - platform: adc
     pin: P23
     name: "Battery Level"
     update_interval: never
     id: bat_volts
+    filters:
+    - multiply: 2.3
 
 deep_sleep:
   sleep_duration: 
@@ -150,8 +186,6 @@ deep_sleep:
   bk71xx_gpio_wakeup:
     - number: 14
       pin_mode: low_keep_awake
-    - number: 22
-      pin_mode: swap_level
   id: deep_sleep_1
 
 script: 
@@ -160,4 +194,4 @@ script:
       - homeassistant.service:
           service: input_boolean.turn_off
           data:
-           entity_id: ${device_ota}
+            entity_id: ${device_ota}

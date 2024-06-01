@@ -101,7 +101,7 @@ gosund_sw2:
   gamma_correct: 1.0
   default_transition_length: 0s
   uart_id: uart_bus
-  mcu_ver: 2
+  #mcu_ver: 2 #SHOULD AUTO-DETECT BASE ON BUILD PLATFORM (ESP8266=v1 and BK7231T=v2)
   status_output: white_led
 
 text_sensor:

@@ -23,6 +23,14 @@ esphome:
 
 bk72xx:
   board: generic-bk7231t-qfn32-tuya
+  
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: add_deepsleep_bk7231n
+    components: [ gosund_sw2 ]
+  
 wifi:
   reboot_timeout: 0s
 
@@ -78,20 +86,19 @@ output:
     inverted: true
 
 light:
-  - platform: custom
-    lambda: |-
-      auto light_out = new gosund::GosundLight(id(white_led), id(uart_bus));
-      App.register_component(light_out);
-      return {light_out};
-    lights:
-      - name: light
-        id: light_out
-        gamma_correct: 1.0
-        default_transition_length: 0s
   - platform: binary
     id: wifi_status
     output: green_led
     restore_mode: ALWAYS_OFF
+
+gosund_sw2:
+  name: light
+  id: light_out
+  gamma_correct: 1.0
+  default_transition_length: 0s
+  uart_id: uart_bus
+  mcu_ver: 2
+  status_output: white_led
 
 text_sensor:
 # Expose ESPHome version as sensor.

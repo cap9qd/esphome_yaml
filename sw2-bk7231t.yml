@@ -29,7 +29,7 @@ external_components:
       type: git
       url: https://github.com/cap9qd/esphome
       ref: add_deepsleep_bk7231n
-      refresh: 30s
+    refresh: 30s
     components: [ gosund_sw2 ]
   
 wifi:

@@ -4,9 +4,6 @@ substitutions:
 esphome:
   name: ${name}
   name_add_mac_suffix: true
-  includes:
-    - devices/gosund_sw2_light.hpp
-    - devices/gosund_sw2_light.cpp
   on_boot:
     priority: 300
     then:

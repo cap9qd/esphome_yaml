@@ -32,6 +32,9 @@ external_components:
     refresh: 30s
     components: [ gosund_sw2 ]
   
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/sw2-bk7231t.yml
+  
 wifi:
   reboot_timeout: 0s
 

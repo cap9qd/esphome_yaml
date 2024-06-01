@@ -4,6 +4,9 @@ substitutions:
 esphome:
   name: ${name}
   name_add_mac_suffix: true
+  project:
+    name: cap9qd.gosund_sw2
+    version: "0.1"
   on_boot:
     priority: 300
     then:

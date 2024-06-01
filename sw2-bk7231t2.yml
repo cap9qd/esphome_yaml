@@ -1,0 +1,134 @@
+substitutions:
+  name: sw2_bk7223t
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: true
+  project:
+    name: cap9qd.gosund_sw2
+    version: "0.1"
+  on_boot:
+    priority: 300
+    then:
+      - light.turn_on: wifi_status
+      - delay: 500ms
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 500ms
+      - light.turn_off: wifi_status
+
+bk72xx:
+  board: generic-bk7231t-qfn32-tuya
+  
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: gosund_sw2
+    refresh: 30s
+    components: [ gosund_sw2 ]
+  
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/sw2-bk7231t.yml
+  
+wifi:
+  reboot_timeout: 0s
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${name} AP
+
+captive_portal:
+
+# Disable logging via the UART
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+  reboot_timeout: 0s
+
+ota:
+
+uart:
+  id: uart_bus
+  baud_rate: 115200
+  tx_pin: GPIO11
+  rx_pin: GPIO10
+  
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO9
+      inverted: true
+    id: button
+    on_press:
+      - light.toggle: light_out
+    on_click:
+      min_length: 5s
+      max_length: 10s
+      then:
+        - switch.turn_on: sw_restart
+
+switch:
+  - platform: restart
+    name: Reboot
+    id: sw_restart
+
+output:
+  - id: green_led
+    platform: gpio
+    pin: GPIO24
+    inverted: true
+  - id: white_led
+    platform: gpio
+    pin: GPIO26
+    inverted: true
+
+light:
+  - platform: binary
+    id: wifi_status
+    output: green_led
+    restore_mode: ALWAYS_OFF
+
+gosund_sw2:
+  name: light
+  id: light_out
+  gamma_correct: 1.0
+  default_transition_length: 0s
+  uart_id: uart_bus
+  mcu_ver: 2
+  status_output: white_led
+
+text_sensor:
+# Expose ESPHome version as sensor.
+  - platform: version
+    name: ESPHome Version
+    
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+    ssid:
+      name: SSID
+    bssid:
+      name: BSSID
+
+sensor:
+# Uptime sensor.
+  - platform: uptime
+    name: Uptime
+    filters:
+      - throttle: 300s
+# WiFi Signal sensor.
+  - platform: wifi_signal
+    name: WiFi Signal
+    filters:
+      - delta: 0.01
+      - throttle: 300s
+
+web_server:
+  port: 80

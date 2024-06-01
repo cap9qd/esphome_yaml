@@ -1,0 +1,19 @@
+substitutions:
+  mft_name: sw2
+  base_name: bk7231t
+  name: "${mft_name}-${base_name}2"
+  #mac: "ABCDEF"
+  #name: "${mft_name}-${base_name}2-${mac}"
+  
+packages:
+  cap9qd.gosund_sw2: 
+    url: https://github.com/cap9qd/esphome_yaml/
+    files: [sw2-bk7231t.yml]
+    refresh: 30s
+esphome:
+  name: ${name}
+  name_add_mac_suffix: true
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password

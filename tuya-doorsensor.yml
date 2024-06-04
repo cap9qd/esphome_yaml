@@ -55,12 +55,12 @@ esphome:
       - light.turn_off: wifi_status
       - deep_sleep.enter: deep_sleep_1
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: add_deepsleep_bk7231n
-    components: [ deep_sleep ]
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/cap9qd/esphome
+#      ref: add_deepsleep_bk7231n
+#    components: [ deep_sleep ]
 
 bk72xx:
   board: cbu
@@ -78,9 +78,11 @@ captive_portal:
 api:
 
 ota:
-  on_end:
-    then:
-      - script.execute: turnoff_ha_ota
+  - platform: esphome
+    password: "abcdefghihjk"
+    on_end:
+      then:
+        - script.execute: turnoff_ha_ota
 
 wifi:
   ap:
@@ -90,8 +92,8 @@ improv_serial:
 
 mdns:
 
-dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/tuya-doorsensor.yml@main
+#dashboard_import:
+#  package_import_url: github://cap9qd/esphome_yaml/tuya-doorsensor.yml@main
 
 binary_sensor:
   - platform: gpio

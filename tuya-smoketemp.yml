@@ -1,0 +1,147 @@
+substitutions:
+  mft_name: tuya
+  base_name: smoketemp
+  name: "${mft_name}-${base_name}"
+  device_ota: "input_boolean.${mft_name}_${base_name}_ota"
+
+esphome:
+  name: ${name}
+  name_add_mac_suffix: true
+  project: 
+    name: cap9qd.tuya-smoke-temp
+    version: "0.3"
+  on_boot:
+    priority: -100
+    then:
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - delay: 500ms
+      - logger.log: "WiFi Connected!"
+      - logger.log: "Waiting for the API to connect..."
+      - wait_until:
+          condition:
+            api.connected:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - logger.log: "API Connected"
+          else:
+            - logger.log: "API NOT Connected"  
+      - delay: 2s
+      - if:
+          condition:
+            binary_sensor.is_on: prevent_deep_sleep
+          then:
+#            - deep_sleep.prevent: deep_sleep_1
+            - logger.log: "Waiting for OTA Update..."
+            - repeat:
+                count: 150
+                then:
+                  - delay: 2s
+            - script.execute: turnoff_ha_ota
+            - logger.log: "Give up waiting on OTA..."
+#            - deep_sleep.allow: deep_sleep_1
+          else:
+            #- component.update: bat_volts
+            - logger.log: 'Entering Deep Sleep'
+#      - deep_sleep.enter: deep_sleep_1
+
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/cap9qd/esphome
+#      ref: add_deepsleep_bk7231n
+#    components: [ deep_sleep ]
+
+bk72xx:
+  board: cb3s
+    
+logger:
+  baud_rate: 0
+
+web_server:
+  port: 80
+
+captive_portal:
+
+api:
+
+ota:
+  - platform: esphome
+    on_end:
+      then:
+        - script.execute: turnoff_ha_ota
+
+wifi:
+  ap:
+    ssid: ${name} AP
+
+mdns:
+
+#debug:
+#  update_interval: 30s
+
+binary_sensor:
+  - platform: homeassistant
+    id: prevent_deep_sleep
+    entity_id: ${device_ota}
+    publish_initial_state: true     # This is important!
+  - platform: tuya
+    sensor_datapoint: 1
+    name: (Unconfirmed) Doorcontact State
+    
+text_sensor:
+#  - platform: debug
+#    reset_reason:
+#      name: Reset Reason
+  - platform: libretiny
+    version:
+      name: LibreTiny Version
+      
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
+
+  
+sensor:
+  - platform: uptime
+    name: Uptime
+  - platform: tuya
+    sensor_datapoint: 2
+    name: (Unconfirmed) Battery Percentage
+    unit_of_measurement: "%"
+
+#deep_sleep:
+#  sleep_duration: 
+#    hours: 1
+#  run_duration: 
+#    default: 
+#      seconds: 10
+#  bk71xx_gpio_wakeup:
+#    - number: 14
+#      pin_mode: low_keep_awake
+#    - number: 22
+#      pin_mode: swap_level
+#  id: deep_sleep_1
+
+script: 
+  - id: turnoff_ha_ota
+    then:
+      - homeassistant.service:
+          service: input_boolean.turn_off
+          data:
+           entity_id: ${device_ota}
+
+uart:
+  rx_pin: GPIO10
+  tx_pin: GPIO11
+  baud_rate: 9600
+
+tuya:
+  # DPIDs processed from schema model: 000004cjy3

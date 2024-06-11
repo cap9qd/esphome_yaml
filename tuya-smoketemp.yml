@@ -82,9 +82,6 @@ wifi:
 
 mdns:
 
-#debug:
-#  update_interval: 30s
-
 binary_sensor:
   - platform: homeassistant
     id: prevent_deep_sleep
@@ -139,8 +136,8 @@ script:
            entity_id: ${device_ota}
 
 uart:
-  rx_pin: GPIO10
-  tx_pin: GPIO11
+  rx_pin: RX1
+  tx_pin: TX1
   baud_rate: 9600
 
 tuya:

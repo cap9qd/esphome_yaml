@@ -73,7 +73,7 @@ bk72xx:
       LT_AUTO_DOWNLOAD_REBOOT: 1
     
 logger:
-  level: NONE
+  baud_rate: 0
   hardware_uart: UART2
 
 web_server:

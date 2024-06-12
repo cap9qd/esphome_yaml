@@ -153,7 +153,6 @@ uart:
   rx_pin: RX1
   tx_pin: TX1
   baud_rate: 9600
-  hardware_uart: UART1
   
 tuya:
   # DPIDs processed from schema model: 000004cjy3

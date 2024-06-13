@@ -60,7 +60,7 @@ external_components:
 bk72xx:
   board: cb3s
   framework:
-    version: dev
+    #version: dev
     loglevel: debug
     debug:
       - wifi

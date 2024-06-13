@@ -128,21 +128,17 @@ sensor:
       name: "Loop Time"
     psram:
       name: "Free PSRAM"
-
-switch:
-  - platform: restart
-    name: "Restart"
-  - platform: safe_mode
-    name: "Restart (Safe Mode)"
-
-  
-sensor:
   - platform: uptime
     name: Uptime
   - platform: tuya
     sensor_datapoint: 2
     name: (Unconfirmed) Battery Percentage
     unit_of_measurement: "%"
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
 
 deep_sleep:
   sleep_duration: 

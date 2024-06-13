@@ -102,15 +102,33 @@ binary_sensor:
   - platform: tuya
     sensor_datapoint: 1
     name: (Unconfirmed) Doorcontact State
-    
+
+debug:
+  update_interval: 30s
+
 text_sensor:
   - platform: debug
+    device:
+      name: "Device Info"
     reset_reason:
-      name: Reset Reason
+      name: "Reset Reason"
   - platform: libretiny
     version:
       name: LibreTiny Version
       
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
+    fragmentation:
+      name: "Heap Fragmentation"
+    block:
+      name: "Heap Max Block"
+    loop_time:
+      name: "Loop Time"
+    psram:
+      name: "Free PSRAM"
+
 switch:
   - platform: restart
     name: "Restart"

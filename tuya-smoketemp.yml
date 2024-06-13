@@ -117,17 +117,6 @@ text_sensor:
       name: LibreTiny Version
       
 sensor:
-  - platform: debug
-    free:
-      name: "Heap Free"
-    fragmentation:
-      name: "Heap Fragmentation"
-    block:
-      name: "Heap Max Block"
-    loop_time:
-      name: "Loop Time"
-    psram:
-      name: "Free PSRAM"
   - platform: uptime
     name: Uptime
   - platform: tuya

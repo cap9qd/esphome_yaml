@@ -104,9 +104,9 @@ binary_sensor:
     name: (Unconfirmed) Doorcontact State
     
 text_sensor:
-#  - platform: debug
-#    reset_reason:
-#      name: Reset Reason
+  - platform: debug
+    reset_reason:
+      name: Reset Reason
   - platform: libretiny
     version:
       name: LibreTiny Version
@@ -126,11 +126,11 @@ sensor:
     name: (Unconfirmed) Battery Percentage
     unit_of_measurement: "%"
 
-#deep_sleep:
-#  sleep_duration: 
-#    hours: 1
+deep_sleep:
+  sleep_duration: 
+    hours: 1
 #  run_duration: 
-#    default: 
+#  default: 
 #      seconds: 10
 #  bk71xx_gpio_wakeup:
 #    - number: 14
@@ -152,6 +152,17 @@ uart:
   rx_pin: RX1
   tx_pin: TX1
   baud_rate: 9600
-  
+  debug:
+    direction: BOTH
+    dummy_receiver: true
+    after:
+      bytes: 3 
+      timeout: 100ms
+      # delimiter: [0x7E] #Specific end byte
+    sequence:     
+      - lambda: |-
+          UARTDebug::log_int(direction, bytes, ',');                 // Log the message as int. 
+          UARTDebug::log_hex(direction, bytes, ',');                 // Log the message in hex.
+          ESP_LOGD("custom", "Bytes size: %d", bytes.size());        // Log how many bytes in the message.  
 tuya:
   # DPIDs processed from schema model: 000004cjy3

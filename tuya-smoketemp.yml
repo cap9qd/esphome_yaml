@@ -60,7 +60,7 @@ external_components:
 bk72xx:
   board: cb3s
   framework:
-    version: dev
+    #version: dev
     loglevel: debug
     debug:
       - wifi
@@ -117,32 +117,17 @@ text_sensor:
       name: LibreTiny Version
       
 sensor:
-  - platform: debug
-    free:
-      name: "Heap Free"
-    fragmentation:
-      name: "Heap Fragmentation"
-    block:
-      name: "Heap Max Block"
-    loop_time:
-      name: "Loop Time"
-    psram:
-      name: "Free PSRAM"
-
-switch:
-  - platform: restart
-    name: "Restart"
-  - platform: safe_mode
-    name: "Restart (Safe Mode)"
-
-  
-sensor:
   - platform: uptime
     name: Uptime
   - platform: tuya
     sensor_datapoint: 2
     name: (Unconfirmed) Battery Percentage
     unit_of_measurement: "%"
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
 
 deep_sleep:
   sleep_duration: 

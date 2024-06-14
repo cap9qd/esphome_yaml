@@ -159,7 +159,7 @@ uart:
     direction: BOTH
     dummy_receiver: true
     after:
-      bytes: 3 
+      bytes: 7
       timeout: 100ms
       # delimiter: [0x7E] #Specific end byte
     #sequence:     

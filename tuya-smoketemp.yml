@@ -177,10 +177,10 @@ uart:
       bytes: 3 
       timeout: 100ms
       # delimiter: [0x7E] #Specific end byte
-    sequence:     
-      - lambda: |-
-          UARTDebug::log_int(direction, bytes, ',');                 // Log the message as int. 
-          UARTDebug::log_hex(direction, bytes, ',');                 // Log the message in hex.
-          ESP_LOGD("custom", "Bytes size: %d", bytes.size());        // Log how many bytes in the message.  
+    #sequence:     
+    #  - lambda: |-
+    #      UARTDebug::log_int(direction, bytes, ',');                 // Log the message as int. 
+    #      UARTDebug::log_hex(direction, bytes, ',');                 // Log the message in hex.
+    #      ESP_LOGD("custom", "Bytes size: %d", bytes.size());        // Log how many bytes in the message.  
 tuya:
   # DPIDs processed from schema model: 000004cjy3

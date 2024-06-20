@@ -163,12 +163,12 @@ sensor:
   - platform: cht8310
     temperature:
       name: "Temperature"
-      min_temp: 20.0
-      max_temp: 30.0
+      min_temp: -2.0
+      max_temp: 2.0
     humidity:
       name: "Humidity"
-      min_humid: 10.0
-      max_humid: 95.0
+      min_humid: -5.0
+      max_humid: 5.0
     update_interval: never
     sd_mode: false
     conv_time: 4
@@ -190,6 +190,8 @@ deep_sleep:
       seconds: 10
   bk71xx_gpio_wakeup:
     - number: 14
+      pin_mode: low_keep_awake
+    - number: P7
       pin_mode: low_keep_awake
   id: deep_sleep_1
 

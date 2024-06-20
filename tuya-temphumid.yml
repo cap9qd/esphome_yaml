@@ -43,7 +43,7 @@ esphome:
           condition:
             binary_sensor.is_on: prevent_deep_sleep
           then:
-            - deep_sleep.prevent: deep_sleep_1
+#            - deep_sleep.prevent: deep_sleep_1
             - logger.log: "Waiting for OTA Update..."
             - repeat:
                 count: 150
@@ -51,13 +51,13 @@ esphome:
                   - delay: 2s
             - script.execute: turnoff_ha_ota
             - logger.log: "Give up waiting on OTA..."
-            - deep_sleep.allow: deep_sleep_1
+#            - deep_sleep.allow: deep_sleep_1
           else:
             - component.update: bat_volts
             - component.update: cht_sensor
             - logger.log: 'Entering Deep Sleep'
       - light.turn_off: wifi_status
-      - deep_sleep.enter: deep_sleep_1
+#      - deep_sleep.enter: deep_sleep_1
 
 external_components:
   # use rtttl and dfplayer from ESPHome's dev branch in GitHub
@@ -185,18 +185,18 @@ sensor:
     filters:
     - multiply: 2.3
 
-deep_sleep:
-  sleep_duration: 
-    hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
-  bk71xx_gpio_wakeup:
-    - number: 14
-      pin_mode: low_keep_awake
-    - number: 7
-      pin_mode: low_keep_awake
-  id: deep_sleep_1
+#deep_sleep:
+#  sleep_duration: 
+#    hours: 1
+#  run_duration: 
+#    default: 
+#      seconds: 10
+#  bk71xx_gpio_wakeup:
+#    - number: 14
+#      pin_mode: low_keep_awake
+#    - number: 7
+#      pin_mode: low_keep_awake
+#  id: deep_sleep_1
 
 script: 
   - id: turnoff_ha_ota

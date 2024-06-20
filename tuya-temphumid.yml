@@ -175,7 +175,7 @@ sensor:
 #    update_interval: never
     update_interval: 10s
     sd_mode: false
-    conv_time: 4
+    conv_time: 5
     address: 0x40
     id: cht_sensor
   - platform: adc

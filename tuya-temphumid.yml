@@ -56,7 +56,7 @@ esphome:
             - component.update: bat_volts
             - component.update: cht_sensor
             - logger.log: 'Entering Deep Sleep'
-      - light.turn_off: wifi_status
+#      - light.turn_off: wifi_status
 #      - deep_sleep.enter: deep_sleep_1
 
 external_components:

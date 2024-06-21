@@ -174,7 +174,8 @@ sensor:
       name: "Humidity"
       min_humid: -5.0
       max_humid: 5.0
-    update_interval: never
+#    update_interval: never
+    update_interval: 10s
     sd_mode: false  # standby-mode 
     conv_time: 2    # 10s
     alarm_pol: true # Alarm Polarity

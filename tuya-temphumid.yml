@@ -176,7 +176,7 @@ sensor:
     update_interval: never
     sd_mode: false  # standby-mode 
     conv_time: 2    # 10s
-    alarm_pol: true # Alarm Polarity
+    alarm_pol: false # Alarm Polarity
     address: 0x40
     id: cht_sensor
   - platform: adc
@@ -197,7 +197,7 @@ deep_sleep:
     - number: 14
       pin_mode: low_keep_awake
     - number: 7
-      pin_mode: high_keep_awake
+      pin_mode: low_keep_awake
   id: deep_sleep_1
 
 script: 

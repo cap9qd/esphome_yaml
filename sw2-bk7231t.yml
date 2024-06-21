@@ -3,6 +3,7 @@ substitutions:
 
 esphome:
   name: ${name}
+  friendly_name: ${device_name}
   name_add_mac_suffix: true
   project:
     name: cap9qd.gosund_sw2

@@ -125,8 +125,6 @@ binary_sensor:
       number: P7
       mode:
         input: true
-        pullup: true
-      inverted: true
     name: "Alert"
     publish_initial_state: true
     on_press:
@@ -178,7 +176,7 @@ sensor:
     update_interval: never
     sd_mode: false  # standby-mode 
     conv_time: 2    # 10s
-    alarm_pol: false # Alarm Polarity
+    alarm_pol: true # Alarm Polarity
     address: 0x40
     id: cht_sensor
   - platform: adc
@@ -189,18 +187,18 @@ sensor:
     filters:
     - multiply: 2.3
 
-deep_sleep:
-  sleep_duration: 
-    hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
-  bk71xx_gpio_wakeup:
-    - number: 14
-      pin_mode: low_keep_awake
-    - number: 7
-      pin_mode: low_keep_awake
-  id: deep_sleep_1
+#deep_sleep:
+#  sleep_duration: 
+#    hours: 1
+#  run_duration: 
+#    default: 
+#      seconds: 10
+#  bk71xx_gpio_wakeup:
+#    - number: 14
+#      pin_mode: low_keep_awake
+#    - number: 7
+#      pin_mode: high_keep_awake
+#  id: deep_sleep_1
 
 script: 
   - id: turnoff_ha_ota

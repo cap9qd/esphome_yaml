@@ -129,6 +129,9 @@ binary_sensor:
         pullup: true
     name: "Alert"
     publish_initial_state: true
+    on_press:
+      then:
+        - component.update: cht_sensor
   - platform: homeassistant
     id: prevent_deep_sleep
     entity_id: ${device_ota}
@@ -172,8 +175,8 @@ sensor:
       name: "Humidity"
       min_humid: -5.0
       max_humid: 5.0
-#    update_interval: never
-    update_interval: 10s
+    update_interval: never
+#    update_interval: 10s
     sd_mode: false
     conv_time: 2
     address: 0x40

@@ -177,7 +177,7 @@ sensor:
     update_interval: never
     sd_mode: false  # standby-mode 
     conv_time: 2    # 10s
-    alarm_pol: false # Alarm Polarity
+    alarm_pol: true # Alarm Polarity
     address: 0x40
     id: cht_sensor
   - platform: adc

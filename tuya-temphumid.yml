@@ -126,12 +126,12 @@ binary_sensor:
         input: true
     name: "Alert"
     publish_initial_state: true
-    on_press:
-      then:
-        - component.update: cht_sensor
-    on_release:
-      then:
-        - component.update: cht_sensor
+#    on_press:
+#      then:
+#        - component.update: cht_sensor
+#    on_release:
+#      then:
+#        - component.update: cht_sensor
   - platform: homeassistant
     id: prevent_deep_sleep
     entity_id: ${device_ota}
@@ -190,18 +190,18 @@ sensor:
     filters:
     - multiply: 2.3
 
-#deep_sleep:
-#  sleep_duration: 
-#    hours: 1
-#  run_duration: 
-#    default: 
-#      seconds: 10
-#  bk71xx_gpio_wakeup:
-#    - number: 14
-#      pin_mode: low_keep_awake
-#    - number: 7
-#      pin_mode: high_keep_awake
-#  id: deep_sleep_1
+deep_sleep:
+  sleep_duration: 
+    hours: 1
+  run_duration: 
+    default: 
+      seconds: 10
+  bk71xx_gpio_wakeup:
+    - number: 14
+      pin_mode: low_keep_awake
+    - number: 7
+      pin_mode: low_keep_awake
+  id: deep_sleep_1
 
 script: 
   - id: turnoff_ha_ota

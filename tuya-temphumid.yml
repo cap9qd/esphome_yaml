@@ -43,7 +43,7 @@ esphome:
           condition:
             binary_sensor.is_on: prevent_deep_sleep
           then:
-#            - deep_sleep.prevent: deep_sleep_1
+            - deep_sleep.prevent: deep_sleep_1
             - logger.log: "Waiting for OTA Update..."
             - repeat:
                 count: 150
@@ -51,16 +51,15 @@ esphome:
                   - delay: 2s
             - script.execute: turnoff_ha_ota
             - logger.log: "Give up waiting on OTA..."
-#            - deep_sleep.allow: deep_sleep_1
+            - deep_sleep.allow: deep_sleep_1
           else:
             - component.update: bat_volts
             - component.update: cht_sensor
             - logger.log: 'Entering Deep Sleep'
-#      - light.turn_off: wifi_status
-#      - deep_sleep.enter: deep_sleep_1
+      - light.turn_off: wifi_status
+      - deep_sleep.enter: deep_sleep_1
 
 external_components:
-  # use rtttl and dfplayer from ESPHome's dev branch in GitHub
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
@@ -124,6 +123,7 @@ binary_sensor:
       number: P7
       mode:
         input: true
+      inverted: true
     name: "Alert"
     publish_initial_state: true
 #    on_press:

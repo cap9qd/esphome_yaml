@@ -123,10 +123,8 @@ binary_sensor:
     id: alert
     pin: 
       number: P7
-      inverted: true
       mode:
         input: true
-        pullup: true
     name: "Alert"
     publish_initial_state: true
     on_press:
@@ -169,16 +167,16 @@ sensor:
   - platform: cht8310
     temperature:
       name: "Temperature"
-      min_temp: -2.0
-      max_temp: 2.0
+      min_temp: -1.0
+      max_temp: 1.0
     humidity:
       name: "Humidity"
       min_humid: -5.0
       max_humid: 5.0
     update_interval: never
-#    update_interval: 10s
-    sd_mode: false
-    conv_time: 2
+    sd_mode: false # standby-mode 
+    conv_time: 2   # 10s
+    alarm_pol: 1   # Alarm Polarity
     address: 0x40
     id: cht_sensor
   - platform: adc
@@ -189,18 +187,18 @@ sensor:
     filters:
     - multiply: 2.3
 
-#deep_sleep:
-#  sleep_duration: 
-#    hours: 1
-#  run_duration: 
-#    default: 
-#      seconds: 10
-#  bk71xx_gpio_wakeup:
-#    - number: 14
-#      pin_mode: low_keep_awake
-#    - number: 7
-#      pin_mode: low_keep_awake
-#  id: deep_sleep_1
+deep_sleep:
+  sleep_duration: 
+    hours: 1
+  run_duration: 
+    default: 
+      seconds: 10
+  bk71xx_gpio_wakeup:
+    - number: 14
+      pin_mode: low_keep_awake
+    - number: 7
+      pin_mode: low_keep_awake
+  id: deep_sleep_1
 
 script: 
   - id: turnoff_ha_ota

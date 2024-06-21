@@ -174,9 +174,9 @@ sensor:
       min_humid: -5.0
       max_humid: 5.0
     update_interval: never
-    sd_mode: false # standby-mode 
-    conv_time: 2   # 10s
-    alarm_pol: 1   # Alarm Polarity
+    sd_mode: false  # standby-mode 
+    conv_time: 2    # 10s
+    alarm_pol: true # Alarm Polarity
     address: 0x40
     id: cht_sensor
   - platform: adc

@@ -116,7 +116,6 @@ binary_sensor:
       inverted: true
       mode:
         input: true
-        pullup: true
     name: "Button"
     publish_initial_state: true
   - platform: gpio
@@ -198,8 +197,8 @@ deep_sleep:
   bk71xx_gpio_wakeup:
     - number: 14
       pin_mode: low_keep_awake
-    - number: 7
-      pin_mode: high_keep_awake
+#    - number: 7
+#      pin_mode: high_keep_awake
   id: deep_sleep_1
 
 script: 

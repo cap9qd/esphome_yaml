@@ -125,6 +125,8 @@ binary_sensor:
       number: P7
       mode:
         input: true
+        pullup: true
+      inverted: true
     name: "Alert"
     publish_initial_state: true
     on_press:

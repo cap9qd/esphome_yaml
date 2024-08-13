@@ -39,7 +39,7 @@ esphome:
             - logger.log: "API Connected"
           else:
             - logger.log: "API NOT Connected"  
-      - delay: 2s
+      - delay: 5s
       - if:
           condition:
             binary_sensor.is_on: prevent_deep_sleep

@@ -1,7 +1,4 @@
 esphome:
-  name: sw5-bk7231n
-  friendly_name: SW5 BK7231N
-  name_add_mac_suffix: true
   name: ${name}
   friendly_name: ${device_name}
   name_add_mac_suffix: true

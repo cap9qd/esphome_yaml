@@ -7,7 +7,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: cap9qd.gosund_sw2
-    version: "0.1"
+    version: "0.2"
   on_boot:
     priority: 300
     then:
@@ -72,7 +72,7 @@ binary_sensor:
       - light.toggle: light_out
     on_click:
       min_length: 5s
-      max_length: 10s
+      max_length: 30s
       then:
         - switch.turn_on: sw_restart
 

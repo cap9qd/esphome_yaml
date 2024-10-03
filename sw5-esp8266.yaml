@@ -1,0 +1,115 @@
+esphome:
+  name: sw5-esp8266
+  friendly_name: SW5 ESP8266
+  name_add_mac_suffix: true
+  name: ${name}
+  friendly_name: ${device_name}
+  name_add_mac_suffix: true
+  project:
+    name: cap9qd.gosund_sw5_esp8266
+    version: "0.1"
+  on_boot:
+    priority: 300
+    then:
+      - light.turn_on: wifi_status
+      - delay: 500ms
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 500ms
+      - light.turn_off: wifi_status
+
+esp8266:
+  board: esp8285
+
+# Enable logging
+logger:
+
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/sw5-esp8266.yml
+
+# Enable Home Assistant API
+api:
+  reboot_timeout: 0s
+
+ota:
+  - platform: esphome
+
+captive_portal:
+
+web_server:
+  port: 80
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      inverted: true
+    id: button
+    on_press:
+      - light.toggle: light_status
+    on_click:
+      min_length: 5s
+      max_length: 30s
+      then:
+        - switch.turn_on: sw_restart
+
+switch:
+  - platform: restart
+    name: Reboot
+    id: sw_restart
+
+output:
+  - id: green_led
+    platform: gpio
+    pin: GPIO2
+    inverted: true
+  - id: red_led
+    platform: gpio
+    pin: GPIO16
+    inverted: true
+  - id: relay
+    platform: gpio
+    pin: GPIO14
+
+light:
+  - platform: binary
+    id: wifi_status
+    output: red_led
+    restore_mode: ALWAYS_ON
+  - platform: binary
+    id: light_status
+    name: light
+    output: green_led
+    on_turn_on:
+      - output.turn_on: relay
+    on_turn_off:
+      - output.turn_off: relay
+
+text_sensor:
+# Expose ESPHome version as sensor.
+  - platform: version
+    name: ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+    ssid:
+      name: SSID
+    bssid:
+      name: BSSID
+      
+sensor:
+# Uptime sensor.
+  - platform: uptime
+    name: Uptime
+    filters:
+      - throttle: 300s
+# WiFi Signal sensor.
+  - platform: wifi_signal
+    name: WiFi Signal
+    filters:
+      - delta: 0.01
+      - throttle: 300s

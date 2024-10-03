@@ -6,7 +6,7 @@ esphome:
   friendly_name: ${device_name}
   name_add_mac_suffix: true
   project:
-    name: cap9qd.gosund_sw5_bk7231n
+    name: cap9qd.ghome_sw5_bk7231n
     version: "0.1"
   on_boot:
     priority: 300

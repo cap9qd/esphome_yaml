@@ -43,7 +43,7 @@ web_server:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO0
+      number: P8
       inverted: true
     id: button
     on_press:
@@ -62,15 +62,15 @@ switch:
 output:
   - id: green_led
     platform: gpio
-    pin: GPIO2
+    pin: P7
     inverted: true
   - id: red_led
     platform: gpio
-    pin: GPIO16
+    pin: P16
     inverted: true
   - id: relay
     platform: gpio
-    pin: GPIO14
+    pin: P14
 
 light:
   - platform: binary

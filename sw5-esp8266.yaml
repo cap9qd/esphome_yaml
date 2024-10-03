@@ -1,7 +1,4 @@
 esphome:
-  name: sw5-esp8266
-  friendly_name: SW5 ESP8266
-  name_add_mac_suffix: true
   name: ${name}
   friendly_name: ${device_name}
   name_add_mac_suffix: true

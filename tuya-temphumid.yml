@@ -178,7 +178,7 @@ sensor:
       max_humid: 5.0
     update_interval: never
 #    update_interval: 10s
-    sd_mode: false  # standby-mode 
+    sd_mode: true  # standby-mode 
     conv_time: 2    # 10s
     alarm_pol: false # Alarm Polarity
     address: 0x40
@@ -200,8 +200,8 @@ deep_sleep:
   bk71xx_gpio_wakeup:
     - number: 14
       pin_mode: low_keep_awake
-    - number: 7
-      pin_mode: low_keep_awake
+#    - number: 7
+#      pin_mode: low_keep_awake
   id: deep_sleep_1
 
 script: 

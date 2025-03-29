@@ -64,27 +64,27 @@ mqtt:
   password: !secret mqtt_pwd
   birth_message:
   will_message:
-  #on_message:
-  #  - topic: "${device_name}/ota_mode"
-  #    payload: 'ON'
-  #    then:
-  #      - globals.set:
-  #          id: ota_mode
-  #          value: 'true'
-  #  - topic: "${device_name}/ota_mode"
-  #    payload: 'OFF'
-  #    then:
-  #      - globals.set:
-  #          id: ota_mode
-  #          value: 'false'
-  #  - topic: "${device_name}/sensor/Temperature/state"
-  #    then:
-  #      - if:
-  #          condition:
-  #            lambda: 'return !id(ota_mode);'
-  #          then:
-  #            - light.turn_on: wifi_status
-  #            - deep_sleep.enter: deep_sleep_1
+  on_message:
+    - topic: "<topic_prefix>/ota_mode"
+      payload: 'ON'
+      then:
+        - globals.set:
+            id: ota_mode
+            value: 'true'
+    - topic: "<topic_prefix>/ota_mode"
+      payload: 'OFF'
+      then:
+        - globals.set:
+            id: ota_mode
+            value: 'false'
+    - topic: "<topic_prefix>/sensor/Temperature/state"
+      then:
+        - if:
+            condition:
+              lambda: 'return !id(ota_mode);'
+            then:
+              - light.turn_on: wifi_status
+              - deep_sleep.enter: deep_sleep_1
 binary_sensor:
   - platform: gpio
     pin: 

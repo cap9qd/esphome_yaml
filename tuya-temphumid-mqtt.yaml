@@ -65,19 +65,19 @@ mqtt:
   birth_message:
   will_message:
   on_message:
-    - topic: ${device_name}/ota_mode
+    - topic: "${device_name}/ota_mode"
       payload: 'ON'
       then:
         - globals.set:
             id: ota_mode
             value: 'true'
-    - topic: ${device_name}/ota_mode
+    - topic: "${device_name}/ota_mode"
       payload: 'OFF'
       then:
         - globals.set:
             id: ota_mode
             value: 'false'
-    - topic: ${device_name}/sensor/Temperature/state
+    - topic: "${device_name}/sensor/Temperature/state"
       then:
         - if:
             condition:

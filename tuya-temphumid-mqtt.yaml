@@ -55,9 +55,9 @@ globals:
     initial_value: 'false'
 
 mqtt:
-  broker: !secrets mqtt_ipaddr
-  username: !secrets mqtt_user
-  password: !secrets mqtt_pwd
+  broker: !secret mqtt_ipaddr
+  username: !secret mqtt_user
+  password: !secret mqtt_pwd
   birth_message:
   will_message:
   on_message:

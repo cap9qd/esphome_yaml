@@ -1,11 +1,6 @@
-substitutions:
-  mft_name: tuya
-  base_name: temphumid
-  device_name: "${mft_name}-${base_name}"
-
 esphome:
   name: ${device_name}
-  name_add_mac_suffix: true
+  name_add_mac_suffix: false
   on_boot:
     priority: -100
     then:
@@ -20,15 +15,8 @@ esphome:
             - delay: 500ms
       - logger.log: "WiFi Connected!"
       - light.turn_on: wifi_status
-      - wait_until:
-          condition:
-            mqtt.connected:
-          timeout: 60s
-      - component.update: bat_volts
-      - component.update: cht_sensor
 
 external_components:
-  # use rtttl and dfplayer from ESPHome's dev branch in GitHub
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
@@ -47,45 +35,65 @@ external_components:
 
 bk72xx:
   board: cbu
-    
+
+ota:
+  - platform: esphome
+    on_end:
+      - mqtt.publish:
+          topic: '${device_name}/ota_mode'
+          payload: 'OFF'
+          retain: true
+
 logger:
-  baud_rate: 115200
-  level: DEBUG
+  baud_rate: 0
+  level: INFO
   hardware_uart: UART1
 
 globals:
   - id: ota_mode
     type: bool
-    initial_value: 'false'
+    initial_value: 'true' #Default to true; retain topic will overwrite once MQTT connects.
+  - id: updates
+    type: int
+    restore_value: no
+    initial_value: '0'
 
 mqtt:
-  broker: !secret mqtt_ipaddr
+  broker: 'homeassistant.local'
   port: 1883
-  username: !secret mqtt_user
-  password: !secret mqtt_pwd
   birth_message:
   will_message:
   on_message:
-    - topic: "<topic_prefix>/ota_mode"
+    - topic: ${device_name}/ota_mode
       payload: 'ON'
       then:
         - globals.set:
             id: ota_mode
             value: 'true'
-    - topic: "<topic_prefix>/ota_mode"
+        - logger.log: "OTA_MODE 'ON'"
+    - topic: ${device_name}/ota_mode
       payload: 'OFF'
       then:
         - globals.set:
             id: ota_mode
             value: 'false'
-    - topic: "<topic_prefix>/sensor/Temperature/state"
-      then:
-        - if:
-            condition:
-              lambda: 'return !id(ota_mode);'
-            then:
-              - light.turn_on: wifi_status
-              - deep_sleep.enter: deep_sleep_1
+        - logger.log: "OTA_MODE 'OFF'"
+  on_connect: 
+    then:
+      - wait_until:
+          condition:
+            lambda: 'return !id(ota_mode);'
+          timeout: 60s
+      - component.update: bat_volts
+      - component.update: cht_sensor
+      - wait_until:
+          condition:
+            lambda: |-
+              return (id(updates) >= 3);
+          timeout: 60s
+      - light.turn_on: wifi_status
+      - deep_sleep.enter: deep_sleep_1
+
 binary_sensor:
   - platform: gpio
     pin: 
@@ -127,7 +135,7 @@ switch:
 i2c:
   sda: P22
   scl: P20
-  scan: true
+  scan: false
   id: bus_a
   softwire: true
   
@@ -137,10 +145,16 @@ sensor:
       name: "Temperature"
       min_temp: 20.0
       max_temp: 30.0
+      on_value: 
+        lambda: |-
+          id(updates)++;
     humidity:
       name: "Humidity"
       min_humid: 10.0
       max_humid: 95.0
+      on_value: 
+        lambda: |-
+          id(updates)++;
     update_interval: never
     sd_mode: false
     conv_time: 4
@@ -153,13 +167,13 @@ sensor:
     id: bat_volts
     filters:
     - multiply: 2.3
+    on_value: 
+      lambda: |-
+        id(updates)++;
 
 deep_sleep:
   sleep_duration: 
     hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
   bk71xx_gpio_wakeup:
     - number: 14
       pin_mode: low_keep_awake

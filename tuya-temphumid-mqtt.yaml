@@ -23,12 +23,7 @@ esphome:
             - delay: 500ms
       - logger.log: "WiFi Connected!"
       - light.turn_on: wifi_status
-
 mdns:
-
-dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/tuya-temphumid-mqtt.yaml
-
 external_components:
   - source:
       type: git

@@ -65,7 +65,7 @@ binary_sensor:
 output:
   - platform: libretiny_pwm
     pin: P6
-    frequency: 10000 Hz
+    frequency: 5000 Hz
     id: pwm_output
 
 light:

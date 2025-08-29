@@ -50,19 +50,19 @@ esphome:
                   - delay: 2s
             - script.execute: turnoff_ha_ota
             - logger.log: "Give up waiting on OTA..."
-            - deep_sleep.allow: deep_sleep_1
+#            - deep_sleep.allow: deep_sleep_1
           else:
             - component.update: bat_volts
             - logger.log: 'Entering Deep Sleep'
       - light.turn_off: wifi_status
-      - deep_sleep.enter: deep_sleep_1
+#      - deep_sleep.enter: deep_sleep_1
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: add_deepsleep_bk7231n
-    components: [ deep_sleep ]
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/cap9qd/esphome
+#      ref: add_deepsleep_bk7231n
+#    components: [ deep_sleep ]
 
 dashboard_import:
   package_import_url: github://cap9qd/esphome_yaml/tuya-pirbattery.yml
@@ -150,18 +150,18 @@ sensor:
     filters:
       - multiply: 2.3
 
-deep_sleep:
-  sleep_duration: 
-    hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
-  bk71xx_gpio_wakeup:
-    - number: 14
-      pin_mode: low_keep_awake
-    - number: 22
-      pin_mode: high_keep_awake
-  id: deep_sleep_1
+#deep_sleep:
+#  sleep_duration: 
+#    hours: 1
+#  run_duration: 
+#    default: 
+#      seconds: 10
+#  bk71xx_gpio_wakeup:
+#    - number: 14
+#      pin_mode: low_keep_awake
+#    - number: 22
+#      pin_mode: high_keep_awake
+#  id: deep_sleep_1
   
 
 script: 

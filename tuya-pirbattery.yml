@@ -61,7 +61,8 @@ external_components:
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
-      ref: add_deepsleep_bk7231n
+      ref: bk7231x_Deep_Sleep
+      #ref: add_deepsleep_bk7231n
     components: [ deep_sleep ]
 
 dashboard_import:

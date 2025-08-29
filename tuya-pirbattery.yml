@@ -63,7 +63,7 @@ external_components:
       url: https://github.com/cap9qd/esphome
       ref: bk7231x_Deep_Sleep
       #ref: add_deepsleep_bk7231n
-      refresh: 30s
+    refresh: 30s
     components: [ deep_sleep ]
 
 dashboard_import:

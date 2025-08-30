@@ -111,7 +111,7 @@ binary_sensor:
       number: P14
       inverted: true
       mode: INPUT_PULLUP
-      allow_other_uses: true
+#      allow_other_uses: true
     name: Button
     publish_initial_state: true     # This is important!
   - platform: gpio
@@ -120,7 +120,7 @@ binary_sensor:
     pin: 
       number: P22
       mode: INPUT
-      allow_other_uses: true
+#      allow_other_uses: true
     publish_initial_state: true     # This is important!
   - platform: homeassistant
     id: prevent_deep_sleep

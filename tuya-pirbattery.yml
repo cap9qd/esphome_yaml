@@ -85,6 +85,7 @@ captive_portal:
 api:
 
 ota:
+  - platform: esphome #REQUIRED or you get code errors but passed validation!
 
 mdns:
 

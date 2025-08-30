@@ -157,9 +157,9 @@ sensor:
 deep_sleep:
   sleep_duration: 
     hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
+#  run_duration: 
+#    default: 
+#      seconds: 10
 #  bk71xx_gpio_wakeup:
 #    - pin: 
 #        number: 14

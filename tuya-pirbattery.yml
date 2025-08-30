@@ -159,9 +159,9 @@ deep_sleep:
     default: 
       seconds: 10
   bk71xx_gpio_wakeup:
-    - number: 14
+    - pin: 14
       pin_mode: low_keep_awake
-    - number: 22
+    - pin: 22
       pin_mode: high_keep_awake
   id: deep_sleep_1
   

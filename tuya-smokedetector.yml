@@ -151,7 +151,7 @@ switch:
   - platform: gpio
     pin: P26
     name: "ADC_PWR"
-    restore_mode: ALWAYS_OFF
+    restore_mode: ALWAYS_ON
   
 sensor:
   - platform: adc

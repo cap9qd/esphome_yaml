@@ -157,15 +157,15 @@ sensor:
 deep_sleep:
   sleep_duration: 60min
   run_duration: 10sec
-  bk71xx_gpio_wakeup:
-    - pin: 
-        number: 14
-        allow_other_uses: true
-      pin_mode: low_keep_awake
-    - pin: 
-        number: 22
-        allow_other_uses: true
-      pin_mode: high_keep_awake
+#  bk71xx_gpio_wakeup:
+#    - pin: 
+#        number: 14
+#        allow_other_uses: true
+#      pin_mode: low_keep_awake
+#    - pin: 
+#        number: 22
+#        allow_other_uses: true
+#      pin_mode: high_keep_awake
   id: deep_sleep_1
   
 

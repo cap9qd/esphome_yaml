@@ -100,6 +100,7 @@ binary_sensor:
   - platform: gpio
     pin: 
       number: P9
+      allow_other_uses: true
       inverted: false
       mode:
         input: true
@@ -109,6 +110,7 @@ binary_sensor:
   - platform: gpio
     pin: 
       number: P15
+      allow_other_uses: true
     name: "Smoke"
     publish_initial_state: true
     filters: 
@@ -120,6 +122,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      allow_other_uses: true
     name: "Button"
     publish_initial_state: true
     filters: 
@@ -166,11 +169,17 @@ deep_sleep:
     default: 
       seconds: 10
   bk71xx_gpio_wakeup:
-    - number: 15
+    - pin: 
+        number: 15
+        allow_other_uses: true
       pin_mode: high_keep_awake
-    - number: 28
+    - pin: 
+        number: 28
+        allow_other_uses: true
       pin_mode: low_keep_awake
-    - number: 9
+    - pin: 
+        number: 9
+        allow_other_uses: true
       pin_mode: high_keep_awake
   id: deep_sleep_1
   

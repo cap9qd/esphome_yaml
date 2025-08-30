@@ -112,21 +112,21 @@ binary_sensor:
       number: P14
       inverted: true
       mode: INPUT_PULLUP
-#      allow_other_uses: true
+      allow_other_uses: true
     name: Button
-    publish_initial_state: true     # This is important!
+    trigger_on_initial_state: true     # This is important!
   - platform: gpio
     id: pir_input
     name: PIR Input
     pin: 
       number: P22
       mode: INPUT
-#      allow_other_uses: true
-    publish_initial_state: true     # This is important!
+      allow_other_uses: true
+    trigger_on_initial_state: true     # This is important!
   - platform: homeassistant
     id: prevent_deep_sleep
     entity_id: ${ota}
-    publish_initial_state: true     # This is important!
+    trigger_on_initial_state: true     # This is important!
  
 switch:
   - platform: restart
@@ -158,15 +158,15 @@ sensor:
 deep_sleep:
   sleep_duration: 60min
   run_duration: 10sec
-#  bk71xx_gpio_wakeup:
-#    - pin: 
-#        number: 14
-#        allow_other_uses: true
-#      pin_mode: low_keep_awake
-#    - pin: 
-#        number: 22
-#        allow_other_uses: true
-#      pin_mode: high_keep_awake
+  bk71xx_gpio_wakeup:
+    - pin: 
+        number: 14
+        allow_other_uses: true
+      pin_mode: low_keep_awake
+    - pin: 
+        number: 22
+        allow_other_uses: true
+      pin_mode: high_keep_awake
   id: deep_sleep_1
   
 

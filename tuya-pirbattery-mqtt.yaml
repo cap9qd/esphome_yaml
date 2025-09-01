@@ -21,25 +21,10 @@ esphome:
               wifi.connected
           then:
             - light.toggle: wifi_status
-            - delay: 250ms
+            - delay: 100ms
       - logger.log: "WiFi Connected!"
       - light.turn_on: wifi_status
-      - logger.log: "Waiting for the MQTT to connect..."
-      - wait_until:
-          condition:
-            mqtt.connected:
-          timeout: 10s
-      - if:
-          condition:
-            mqtt.connected:
-          then:
-            - logger.log: "MQTT Connected"
-          else:
-            - logger.log: "MQTT NOT Connected"  
-      - component.update: bat_volts
-      - logger.log: 'Entering Deep Sleep'
-      - deep_sleep.enter: deep_sleep_1
-
+      
 external_components:
   - source:
       type: git
@@ -62,9 +47,38 @@ web_server:
 captive_portal:
 
 mqtt:
+  broker: 'homeassistant.local'
+  port: 1883
+  
+  birth_message:
   will_message: 
-    topic: ${device_name}/status
-    payload: "online"
+  on_message:
+    - topic: ${device_name}/ota_mode
+      payload: 'ON'
+      then:
+        - globals.set:
+            id: ota_mode
+            value: 'true'
+        - logger.log: "OTA_MODE 'ON'"
+    - topic: ${device_name}/ota_mode
+      payload: 'OFF'
+      then:
+        - globals.set:
+            id: ota_mode
+            value: 'false'
+        - logger.log: "OTA_MODE 'OFF'"
+  on_connect: 
+    then:
+      - wait_until:
+          condition:
+            lambda: 'return !id(ota_mode);'
+          timeout: 60s
+      - component.update: bat_volts
+      - component.update: button_input
+      - component.update: pir_input
+      - logger.log: 'Entering Deep Sleep'
+      - deep_sleep.enter: deep_sleep_1
+
 ota:
   - platform: esphome
   

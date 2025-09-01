@@ -76,9 +76,6 @@ improv_serial:
 
 mdns:
 
-dashboard_import:
-  package_import_url: github://cap9qd/esphome_yaml/tuya-smokedetector.yml
-
 binary_sensor:
   - platform: gpio
     pin: 

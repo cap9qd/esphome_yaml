@@ -45,7 +45,7 @@ external_components:
       url: https://github.com/cap9qd/esphome
       ref: bk7231x_Deep_Sleep
     components: [ deep_sleep ]
-    refresh: 30s
+    refresh: 10s
     
 bk72xx:
   board: cbu

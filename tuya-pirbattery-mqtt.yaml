@@ -82,7 +82,8 @@ mqtt:
           timeout: 60s
       - mqtt.publish_json:
           topic: ${device_name}/ota_mode
-          payload: "OFF"
+          payload: |-
+            root["value"] = "OFF";
           retain: True
       - component.update: bat_volts
       #- component.update: button_input

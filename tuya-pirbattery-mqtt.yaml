@@ -80,6 +80,10 @@ mqtt:
           condition:
             lambda: 'return !id(ota_mode);'
           timeout: 60s
+      - mqtt.publish_json:
+          topic: ${device_name}/ota_mode
+          payload: "OFF"
+          retain: True
       - component.update: bat_volts
       #- component.update: button_input
       #- component.update: pir_input

@@ -1,0 +1,159 @@
+substitutions:
+  mft_name: tuya
+  base_name: smokedetector
+  device_name: "${mft_name}-${base_name}"
+  device_ota: "input_boolean.${mft_name}_${base_name}_ota"
+  #device_name: "${mft_name}-${base_name}-${mac_address}"
+  #device_ota: "input_boolean.${mft_name}_${base_name}_${mac_address}_ota"
+
+esphome:
+  name: ${device_name}
+  friendly_name: ${device_name}
+  name_add_mac_suffix: true
+  project:
+    name: cap9qd.tuya-smokedetector-mqtt
+    version: "0.1"
+  on_boot:
+    priority: -100
+    then:
+      - light.turn_on: wifi_status
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 100ms
+      - logger.log: "WiFi Connected!"
+      - light.turn_on: wifi_status
+      - logger.log: "Waiting for the MQTT to connect..."
+      - wait_until:
+          condition:
+            mqtt.connected:
+      - if:
+          condition:
+            mqtt.connected:
+          then:
+            - logger.log: "MQTT Connected"
+          else:
+            - logger.log: "MQTT NOT Connected"  
+      - deep_sleep.enter: deep_sleep_1
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: bk7231x_Deep_Sleep
+    components: [ deep_sleep ]
+    refresh: 30s
+    
+bk72xx:
+  board: cbu
+  
+logger:
+  baud_rate: 115200
+  level: DEBUG
+  hardware_uart: UART1
+
+web_server:
+  port: 80
+
+captive_portal:
+
+mqtt:
+  will_message: 
+    topic: ${name}/status
+    payload: "online"
+
+ota:
+  - platform: esphome
+  
+wifi:
+  ap:
+    ssid: ${device_name} AP
+
+improv_serial:
+
+mdns:
+
+dashboard_import:
+  package_import_url: github://cap9qd/esphome_yaml/tuya-smokedetector.yml
+
+binary_sensor:
+  - platform: gpio
+    pin: 
+      number: P9
+      allow_other_uses: true
+      inverted: false
+      mode:
+        input: true
+        pullup: true
+    name: "Tamper"
+    publish_initial_state: true
+  - platform: gpio
+    pin: 
+      number: P15
+      allow_other_uses: true
+    name: "Smoke"
+    publish_initial_state: true
+  - platform: gpio
+    pin: 
+      number: P28
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+      allow_other_uses: true
+    name: "Button"
+    publish_initial_state: true
+
+output:
+  - platform: gpio
+    pin: P17
+    id: status_led
+
+light:
+  - platform: binary
+    id: wifi_status
+    output: status_led
+    restore_mode: ALWAYS_ON
+    
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
+  - platform: gpio
+    pin: P26
+    name: "ADC_PWR"
+    restore_mode: ALWAYS_ON
+  
+sensor:
+  - platform: adc
+    pin: P23
+    name: "Battery Level"
+    update_interval: never
+    id: bat_volts
+    filters:
+    - multiply: 2.3
+    
+deep_sleep:
+  sleep_duration: 
+    hours: 1
+  run_duration: 
+    default: 
+      seconds: 10
+  bk71xx_gpio_wakeup:
+    - pin: 
+        number: 15
+        allow_other_uses: true
+      pin_mode: high_keep_awake
+    - pin: 
+        number: 28
+        allow_other_uses: true
+      pin_mode: low_keep_awake
+    - pin: 
+        number: 9
+        allow_other_uses: true
+      pin_mode: high_keep_awake
+  id: deep_sleep_1

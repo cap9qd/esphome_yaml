@@ -154,7 +154,7 @@ i2c:
   scl: P20
   scan: false
   id: bus_a
-  softwire: true
+  #softwire: true
   
 sensor:
   - platform: cht8310

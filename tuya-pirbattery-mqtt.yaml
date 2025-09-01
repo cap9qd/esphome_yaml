@@ -80,6 +80,7 @@ mqtt:
           condition:
             lambda: 'return !id(ota_mode);'
           timeout: 60s
+      # This serves two purposes: 1- Turn off OTA mode on timeout and 2- Generate ota_mode topic on first install/execute
       - mqtt.publish:
           topic: ${device_name}/ota_mode
           payload: 'OFF'

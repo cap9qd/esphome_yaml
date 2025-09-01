@@ -30,16 +30,19 @@ external_components:
       url: https://github.com/cap9qd/esphome
       ref: i2c_soft
     components: [ i2c ]
+    refresh: 10s
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
       ref: cht8310
     components: [ cht8310 ]
+    refresh: 10s
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
       ref: bk7231x_Deep_Sleep
     components: [ deep_sleep ]
+    refresh: 10s
 
 bk72xx:
   board: cbu

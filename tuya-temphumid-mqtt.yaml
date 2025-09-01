@@ -197,7 +197,7 @@ deep_sleep:
         allow_other_uses: true
       pin_mode: low_keep_awake
     - pin: 
-        number: P7
-        inverted: true
+        number: 7
         allow_other_uses: true
+      pin_mode: low_keep_awake
   id: deep_sleep_1

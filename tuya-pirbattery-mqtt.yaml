@@ -46,6 +46,11 @@ web_server:
 
 captive_portal:
 
+globals:
+  - id: ota_mode
+    type: bool
+    initial_value: 'true' #Default to true; retain topic will overwrite once MQTT connects.
+
 mqtt:
   broker: 'homeassistant.local'
   port: 1883

@@ -2,13 +2,12 @@
 substitutions:
   mft_name: tuya
   base_name: pirbattery
-  mac: dd26d8
-  name: "${mft_name}-${base_name}"
+  device_name: "${mft_name}-${base_name}"
   ota: "input_boolean.${mft_name}_${base_name}_ota"
 
 esphome:
-  name: ${name}
-  friendly_name: ${name}
+  name: ${device_name}
+  friendly_name: ${device_name}
   name_add_mac_suffix: true
   project: 
     name: cap9qd.tuya-pirbattery-mqtt
@@ -64,7 +63,7 @@ captive_portal:
 
 mqtt:
   will_message: 
-    topic: ${name}/status
+    topic: ${device_name}/status
     payload: "online"
 ota:
   - platform: esphome
@@ -73,7 +72,7 @@ mdns:
 
 wifi:
   ap:
-    ssid: ${name} AP
+    ssid: ${device_name} AP
     
 button:
   - platform: restart

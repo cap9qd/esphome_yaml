@@ -1,0 +1,148 @@
+#Tuya PIR and Alarm 812WT
+substitutions:
+  mft_name: tuya
+  base_name: pirbattery
+  mac: dd26d8
+  name: "${mft_name}-${base_name}"
+  ota: "input_boolean.${mft_name}_${base_name}_ota"
+
+esphome:
+  name: ${name}
+  friendly_name: ${name}
+  name_add_mac_suffix: true
+  project: 
+    name: cap9qd.tuya-pirbattery-mqtt
+    version: "1.0"
+  on_boot:
+    priority: -100
+    then:
+      - while:
+          condition:
+            not:
+              wifi.connected
+          then:
+            - light.toggle: wifi_status
+            - delay: 250ms
+      - logger.log: "WiFi Connected!"
+      - light.turn_on: wifi_status
+      - logger.log: "Waiting for the MQTT to connect..."
+      - wait_until:
+          condition:
+            mqtt.connected:
+          timeout: 10s
+      - if:
+          condition:
+            mqtt.connected:
+          then:
+            - logger.log: "MQTT Connected"
+          else:
+            - logger.log: "MQTT NOT Connected"  
+      - component.update: bat_volts
+      - logger.log: 'Entering Deep Sleep'
+      - deep_sleep.enter: deep_sleep_1
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/cap9qd/esphome
+      ref: bk7231x_Deep_Sleep
+    refresh: 10s
+    components: [ deep_sleep ]
+
+bk72xx:
+  board: cbu
+  
+logger:
+  baud_rate: 115200
+  level: VERY_VERBOSE
+  hardware_uart: UART1
+
+web_server:
+  port: 80
+
+captive_portal:
+
+mqtt:
+  will_message: 
+    topic: ${name}/status
+    payload: "online"
+ota:
+  - platform: esphome
+  
+mdns:
+
+wifi:
+  ap:
+    ssid: ${name} AP
+    
+button:
+  - platform: restart
+    name: Restart
+
+debug:
+  update_interval: 30s
+
+text_sensor:
+  - platform: debug
+    reset_reason:
+      name: Reset Reason
+
+binary_sensor:
+  - platform: gpio
+    id: button_input
+    pin:
+      number: P14
+      inverted: true
+      mode: INPUT_PULLUP
+      allow_other_uses: true
+    name: Button
+    trigger_on_initial_state: true     # This is important!
+  - platform: gpio
+    id: pir_input
+    name: PIR Input
+    pin: 
+      number: P22
+      mode: INPUT
+      allow_other_uses: true
+    trigger_on_initial_state: true     # This is important!
+ 
+switch:
+  - platform: restart
+    name: "Restart"
+  - platform: safe_mode
+    name: "Restart (Safe Mode)"
+
+output:
+  - platform: gpio
+    pin: P20
+    id: status_led
+    inverted: true
+
+light:
+  - platform: binary
+    id: wifi_status
+    output: status_led
+    restore_mode: ALWAYS_ON
+
+sensor:
+  - platform: adc
+    pin: P23
+    name: "Battery Voltage"
+    id: bat_volts
+    update_interval: never
+    filters:
+      - multiply: 2.3
+
+deep_sleep:
+  sleep_duration: 60min
+#  run_duration: 10sec
+  bk71xx_gpio_wakeup:
+    - pin: 
+        number: 14
+        allow_other_uses: true
+      pin_mode: low_keep_awake
+    - pin: 
+        number: 22
+        allow_other_uses: true
+      pin_mode: SWAP_LEVEL #high_keep_awake
+  id: deep_sleep_1

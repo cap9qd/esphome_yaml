@@ -25,12 +25,12 @@ esphome:
       - light.turn_on: wifi_status
 mdns:
 external_components:
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: i2c_soft
-    components: [ i2c ]
-    refresh: 10s
+  #- source:
+  #    type: git
+  #    url: https://github.com/cap9qd/esphome
+  #    ref: i2c_soft
+  #  components: [ i2c ]
+  #  refresh: 10s
   - source:
       type: git
       url: https://github.com/cap9qd/esphome

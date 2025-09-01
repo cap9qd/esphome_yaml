@@ -38,7 +38,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/cap9qd/esphome
-      ref: add_deepsleep_bk7231n
+      ref: bk7231x_Deep_Sleep
     components: [ deep_sleep ]
 
 bk72xx:
@@ -117,6 +117,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      allow_other_uses: true
     name: "Button"
     publish_initial_state: true
   - platform: gpio
@@ -127,6 +128,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      allow_other_uses: true
     name: "Alert"
     publish_initial_state: true
     
@@ -190,6 +192,12 @@ deep_sleep:
   sleep_duration: 
     hours: 1
   bk71xx_gpio_wakeup:
-    - number: 14
+    - pin
+        number: 14
+        allow_other_uses: true
       pin_mode: low_keep_awake
+    - pin: 
+        number: P7
+        inverted: true
+        allow_other_uses: true
   id: deep_sleep_1

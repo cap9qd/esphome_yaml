@@ -62,7 +62,7 @@ captive_portal:
 
 mqtt:
   will_message: 
-    topic: ${name}/status
+    topic: ${device_name}/status
     payload: "online"
 
 ota:

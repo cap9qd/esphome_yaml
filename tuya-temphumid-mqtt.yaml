@@ -99,7 +99,6 @@ mqtt:
             lambda: |-
               return (id(updates) >= 3);
           timeout: 60s
-      - light.turn_on: wifi_status
       - deep_sleep.enter: deep_sleep_1
 
 binary_sensor:

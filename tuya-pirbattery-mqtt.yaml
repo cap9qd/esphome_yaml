@@ -55,7 +55,6 @@ mqtt:
   broker: 'homeassistant.local'
   port: 1883
   
-  birth_message:
   will_message: 
   on_message:
     - topic: ${device_name}/ota_mode

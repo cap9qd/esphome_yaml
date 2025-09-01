@@ -79,8 +79,8 @@ mqtt:
             lambda: 'return !id(ota_mode);'
           timeout: 60s
       - component.update: bat_volts
-      - component.update: button_input
-      - component.update: pir_input
+      #- component.update: button_input
+      #- component.update: pir_input
       - logger.log: 'Entering Deep Sleep'
       - deep_sleep.enter: deep_sleep_1
 

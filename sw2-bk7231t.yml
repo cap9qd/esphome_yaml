@@ -70,7 +70,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-      filters:
+    filters:
        - settle: 100ms
     id: button
     on_press:

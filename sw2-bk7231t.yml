@@ -7,7 +7,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: cap9qd.gosund_sw2
-    version: "0.33"
+    version: "0.34"
   on_boot:
     priority: 300
     then:

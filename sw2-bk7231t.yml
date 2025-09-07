@@ -70,6 +70,9 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+    filter: 
+      - delayed_on: 250ms
+      - delayed_off: 250ms
     id: button
     on_press:
       - light.toggle: light_out

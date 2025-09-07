@@ -70,6 +70,8 @@ binary_sensor:
       mode:
         input: true
         pullup: true
+      filters:
+       - settle: 100ms
     id: button
     on_press:
       - light.toggle: light_out
@@ -109,10 +111,8 @@ gosund_sw2:
   status_output: white_led
 
 text_sensor:
-# Expose ESPHome version as sensor.
   - platform: version
     name: ESPHome Version
-    
   - platform: wifi_info
     ip_address:
       name: IP Address

@@ -69,9 +69,9 @@ binary_sensor:
       inverted: true
       mode:
         input: true
-        pullup: true
-    filters:
-       - settle: 100ms
+#        pullup: true
+#    filters:
+#       - settle: 100ms
     id: button
     on_press:
       - light.toggle: light_out
@@ -110,6 +110,7 @@ gosund_sw2:
   uart_id: uart_bus
   status_output: white_led
   mcu_ver: 2
+  debug: true
 
 text_sensor:
   - platform: version

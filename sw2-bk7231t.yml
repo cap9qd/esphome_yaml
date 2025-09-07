@@ -67,8 +67,8 @@ binary_sensor:
     pin:
       number: GPIO9
       inverted: true
-      mode:
-        input: true
+#      mode:
+#        input: true
 #        pullup: true
 #    filters:
 #       - settle: 100ms

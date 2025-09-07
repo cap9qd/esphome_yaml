@@ -109,6 +109,7 @@ gosund_sw2:
   default_transition_length: 0s
   uart_id: uart_bus
   status_output: white_led
+  mcu_ver: 2
 
 text_sensor:
   - platform: version

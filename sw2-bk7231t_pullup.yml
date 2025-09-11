@@ -106,7 +106,7 @@ gosund_sw2:
   name: light
   id: light_out
   gamma_correct: 1.0
-  default_transition_length: 2s
+  default_transition_length: 1s
   uart_id: uart_bus
   status_output: white_led
   mcu_ver: 2

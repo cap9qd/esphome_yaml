@@ -7,7 +7,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: cap9qd.gosund_sw2
-    version: "0.35"
+    version: "0.36"
   on_boot:
     priority: 300
     then:
@@ -106,7 +106,7 @@ gosund_sw2:
   name: light
   id: light_out
   gamma_correct: 1.0
-  default_transition_length: 0s
+  default_transition_length: 2s
   uart_id: uart_bus
   status_output: white_led
   mcu_ver: 2

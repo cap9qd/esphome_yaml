@@ -31,7 +31,7 @@ external_components:
       url: https://github.com/cap9qd/esphome
       ref: gosund_sw2
     refresh: 30s
-    components: [ gosund_sw2 ]
+    components: [ gosund_sw2_dev ]
   
 dashboard_import:
   package_import_url: github://cap9qd/esphome_yaml/sw2-bk7231t.yml

@@ -33,7 +33,7 @@ captive_portal:
 mdns:
 
 time:
-  - platform: sntp
+  - platform: homeassistant
     id: sntp_time
     timezone: "America/Chicago"
     on_time_sync:

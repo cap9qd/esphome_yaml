@@ -45,6 +45,7 @@ uart:
 
 # Register the Tuya MCU connection
 tuya:
+  time_id: sntp_time
 
 # Create a light using the dimmer
 light:

@@ -165,7 +165,7 @@ sensor:
 deep_sleep:
   sleep_duration: 1hr
   run_duration: 60sec
-  wakeup_pins:
+  wakeup_pin:
     - pin: 
         number: 15
         allow_other_uses: true

@@ -58,13 +58,13 @@ esphome:
       - light.turn_off: wifi_status
       - deep_sleep.enter: deep_sleep_1
 
-external_components:
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: bk7231x_Deep_Sleep
-    components: [ deep_sleep ]
-    refresh: 30s
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/cap9qd/esphome
+#      ref: bk7231x_Deep_Sleep
+#    components: [ deep_sleep ]
+#    refresh: 30s
     
 bk72xx:
   board: cbu
@@ -163,24 +163,22 @@ sensor:
     - multiply: 2.3
     
 deep_sleep:
-  sleep_duration: 
-    hours: 1
-  run_duration: 
-    default: 
-      seconds: 10
-  bk71xx_gpio_wakeup:
+  sleep_duration: 1hr
+  run_duration: 60sec
+  wakeup_pins:
     - pin: 
         number: 15
         allow_other_uses: true
-      pin_mode: high_keep_awake
+      pin_mode: KEEP_AWAKE
     - pin: 
         number: 28
         allow_other_uses: true
-      pin_mode: low_keep_awake
+        inverted: true
+      pin_mode: keep_awake
     - pin: 
         number: 9
         allow_other_uses: true
-      pin_mode: high_keep_awake
+      pin_mode: keep_awake
   id: deep_sleep_1
   
 script: 

@@ -37,12 +37,12 @@ external_components:
       ref: cht8310
     components: [ cht8310 ]
     refresh: 10s
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: bk7231x_Deep_Sleep
-    components: [ deep_sleep ]
-    refresh: 10s
+  #- source:
+  #    type: git
+  #    url: https://github.com/cap9qd/esphome
+  #    ref: bk7231x_Deep_Sleep
+  #  components: [ deep_sleep ]
+  #  refresh: 10s
 
 bk72xx:
   board: cbu
@@ -192,15 +192,17 @@ sensor:
         id(updates)++;
 
 deep_sleep:
-  sleep_duration: 
-    hours: 1
-  bk71xx_gpio_wakeup:
+  sleep_duration: 60min
+  run_duration: 60sec
+  wakeup_pins:
     - pin
         number: 14
         allow_other_uses: true
-      pin_mode: low_keep_awake
+        inverted: true
+      pin_mode: keep_awake
     - pin: 
         number: 7
         allow_other_uses: true
-      pin_mode: low_keep_awake
+        inverted: true
+      pin_mode: keep_awake
   id: deep_sleep_1

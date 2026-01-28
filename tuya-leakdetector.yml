@@ -70,12 +70,12 @@ dashboard_import:
 bk72xx:
   board: cbu
   
-external_components:
-  - source:
-      type: git
-      url: https://github.com/cap9qd/esphome
-      ref: add_deepsleep_bk7231n
-    components: [ deep_sleep ]
+#external_components:
+#  - source:
+#      type: git
+#      url: https://github.com/cap9qd/esphome
+#      ref: add_deepsleep_bk7231n
+#    components: [ deep_sleep ]
 
 # Enable logging
 logger:
@@ -147,18 +147,16 @@ sensor:
       - multiply: 2.0
 
 deep_sleep:
-#  sleep_duration: 60sec
-#  run_duration: 60sec
-  run_duration: 
-    default: 60sec
-    gpio_wakeup_reason: 60sec
-  sleep_duration: 131076sec 
-  #60min
-  bk71xx_gpio_wakeup:
-    - number: 16
-      pin_mode: high_keep_awake
-    - number: 20
-      pin_mode: low_keep_awake
+  sleep_duration: 60min
+  run_duration: 60sec
+  wakeup_pins:
+    - pin:
+        number: 16
+      pin_mode: KEEP_AWAKE
+    - pin:
+        number: 20
+        inverted: true
+      pin_mode: KEEP_AWAKE
   id: deep_sleep_1
   
 light:

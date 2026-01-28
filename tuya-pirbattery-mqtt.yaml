@@ -38,7 +38,6 @@ bk72xx:
   
 logger:
   baud_rate: 115200
-  level: VERY_VERBOSE
   hardware_uart: UART1
 
 web_server:

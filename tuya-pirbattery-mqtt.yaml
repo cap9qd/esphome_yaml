@@ -158,7 +158,7 @@ sensor:
 
 deep_sleep:
   sleep_duration: 60min
-#  run_duration: 10sec
+  run_duration: 60sec
   bk71xx_gpio_wakeup:
     - pin: 
         number: 14

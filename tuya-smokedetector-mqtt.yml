@@ -97,9 +97,9 @@ ota:
     on_end:
       then:
         - mqtt.publish:
-          topic: ${device_name}/ota_mode
-          payload: 'OFF'
-          retain: True
+            topic: ${device_name}/ota_mode
+            payload: 'OFF'
+            retain: True
   
 wifi:
   ap:

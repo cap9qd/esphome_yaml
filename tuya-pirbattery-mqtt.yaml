@@ -66,6 +66,7 @@ mqtt:
             id: ota_mode
             value: 'true'
         - logger.log: "OTA_MODE 'ON'"
+        - deep_sleep.prevent: deep_sleep_1
     - topic: ${device_name}/ota_mode
       payload: 'OFF'
       then:
@@ -73,23 +74,30 @@ mqtt:
             id: ota_mode
             value: 'false'
         - logger.log: "OTA_MODE 'OFF'"
+        - deep_sleep.allow: deep_sleep_1
   on_connect: 
     then:
       - wait_until:
           condition:
             lambda: 'return !id(ota_mode);'
-          timeout: 60s
-      # This serves two purposes: 1- Turn off OTA mode on timeout and 2- Generate ota_mode topic on first install/execute
+          timeout: 90s
       - mqtt.publish:
           topic: ${device_name}/ota_mode
           payload: 'OFF'
           retain: True
       - component.update: bat_volts
       - logger.log: 'Entering Deep Sleep'
+      - deep_sleep.allow: deep_sleep_1
       - deep_sleep.enter: deep_sleep_1
 
 ota:
   - platform: esphome
+    on_end:
+      then:
+        - mqtt.publish:
+            topic: ${device_name}/ota_mode
+            payload: 'OFF'
+            retain: True
   
 mdns:
 

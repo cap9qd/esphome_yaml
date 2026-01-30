@@ -68,6 +68,7 @@ mqtt:
             id: ota_mode
             value: 'true'
         - logger.log: "OTA_MODE 'ON'"
+        - deep_sleep.prevent: deep_sleep_1
     - topic: ${device_name}/ota_mode
       payload: 'OFF'
       then:
@@ -75,18 +76,20 @@ mqtt:
             id: ota_mode
             value: 'false'
         - logger.log: "OTA_MODE 'OFF'"
+        - deep_sleep.allow: deep_sleep_1
   on_connect: 
     then:
       - wait_until:
           condition:
             lambda: 'return !id(ota_mode);'
-          timeout: 60s
+          timeout: 90s
       - mqtt.publish:
           topic: ${device_name}/ota_mode
           payload: 'OFF'
           retain: True
       - component.update: bat_volts
       - logger.log: 'Entering Deep Sleep'
+      - deep_sleep.allow: deep_sleep_1
       - deep_sleep.enter: deep_sleep_1
 
 ota:

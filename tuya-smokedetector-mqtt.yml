@@ -69,6 +69,7 @@ mqtt:
             value: 'true'
         - logger.log: "OTA_MODE 'ON'"
         - deep_sleep.prevent: deep_sleep_1
+        - delay: 90sec
     - topic: ${device_name}/ota_mode
       payload: 'OFF'
       then:
